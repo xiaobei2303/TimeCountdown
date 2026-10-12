@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_anniversary_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <!-- 第一行：标题 -->
+    <TextView
+        android:id="@+id/anni_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="茉莉生日"
+        android:textColor="#7B3F00"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:includeFontPadding="false" />
+
+    <!-- 图标 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="🎂"
+        android:textSize="24sp"
+        android:includeFontPadding="false" />
+
+    <!-- 中间：大数字 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/anni_prefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="还有"
+            android:textColor="#5C2E00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/anni_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="171"
+            android:textColor="#5C2E00"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/anni_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="天"
+            android:textColor="#5C2E00"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:includeFontPadding="false" />
+    </LinearLayout>
+
+    <!-- 倒数第二行：描述 -->
+    <TextView
+        android:id="@+id/anni_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="已出生1290天"
+        android:textColor="#9B6B3F"
+        android:textSize="12sp"
+        android:includeFontPadding="false" />
+
+</LinearLayout>
