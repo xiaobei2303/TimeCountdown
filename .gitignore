@@ -1,0 +1,18 @@
+# Build artifacts
+build/
+android-sdk/
+*.apk
+!TimeCountdown.apk
+
+# IDE
+.idea/
+*.iml
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.log
