@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">时间倒计时</string>
+    <string name="widget_description">霓虹风格时间倒计时小组件，显示本年/本月/本周/今日剩余时间</string>
+    <string name="anniversary_description">纪念日倒计时小组件，可自定义标题和日期，自动计算已过去/还剩下天数</string>
+</resources>
