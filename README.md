@@ -19,11 +19,11 @@
 
 ## 效果图
 
-![桌面小组件效果图](screenshots/widget_preview.png)
+![桌面小组件效果图](https://aka.doubaocdn.com/s/8oJIXRZ4qh)
 
 ## 下载安装
 
-[点击下载 APK（v1.4）](TimeCountdown.apk)
+[点击下载 APK（v1.4，约62KB）](https://aka.doubaocdn.com/s/RdY852c8BC)
 
 - 支持 Android 5.0（API 21）及以上
 - APK 大小约 62KB，极轻量
@@ -61,8 +61,6 @@ android/app/src/main/
     values/                      - 字符串和样式
     xml/                         - widget 配置
 www/index.html                   - 全屏 Web 版倒计时
-screenshots/                     - 效果图
-TimeCountdown.apk                - 编译好的安装包
 ```
 
 ## 构建说明
