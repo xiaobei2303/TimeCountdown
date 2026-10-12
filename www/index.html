@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a1a">
+<title>时间倒计时</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0a1a;
+    color: #fff;
+    user-select: none;
+  }
+  
+  body {
+    background: 
+      radial-gradient(ellipse at 30% 20%, rgba(120, 40, 200, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(0, 150, 200, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #0d0d24 0%, #080818 50%, #0d1a2a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+  }
+  
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 30px 30px;
+    pointer-events: none;
+  }
+  
+  .widget {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 1 / 1;
+    border-radius: 28px;
+    padding: 12px;
+    position: relative;
+    background: linear-gradient(145deg, rgba(20, 20, 45, 0.85), rgba(10, 10, 28, 0.92));
+    backdrop-filter: blur(20px);
+    box-shadow: 
+      0 0 1px rgba(255,255,255,0.15),
+      0 8px 40px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  
+  .widget::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    padding: 1.2px;
+    background: linear-gradient(135deg, 
+      rgba(255, 110, 199, 0.5), 
+      rgba(78, 255, 199, 0.3),
+      rgba(78, 168, 255, 0.5),
+      rgba(255, 170, 78, 0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .grid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .cell {
+    border-radius: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: rgba(15, 15, 35, 0.6);
+    transition: transform 0.15s ease;
+  }
+  
+  .cell:active { transform: scale(0.96); }
+  
+  .cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: var(--neon-color);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .cell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: var(--cell-glow);
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  
+  .cell.pink {
+    --neon-color: linear-gradient(135deg, #ff6ec7, #ff8ed8);
+    --cell-glow: radial-gradient(circle at 50% 50%, rgba(255,110,199,0.4), transparent 70%);
+    --text-glow: rgba(255, 110, 199, 0.6);
+    --accent: #ff8ed8;
+  }
+  .cell.cyan {
+    --neon-color: linear-gradient(135deg, #4effc7, #6effd0);
+    --cell-glow: radial-gradient(circle at 50% 50%, rgba(78,255,199,0.4), transparent 70%);
+    --text-glow: rgba(78, 255, 199, 0.6);
+    --accent: #6effd0;
+  }
+  .cell.orange {
+    --neon-color: linear-gradient(135deg, #ffaa4e, #ffbb6e);
+    --cell-glow: radial-gradient(circle at 50% 50%, rgba(255,170,78,0.4), transparent 70%);
+    --text-glow: rgba(255, 170, 78, 0.6);
+    --accent: #ffbb6e;
+  }
+  .cell.blue {
+    --neon-color: linear-gradient(135deg, #4ea8ff, #6eb8ff);
+    --cell-glow: radial-gradient(circle at 50% 50%, rgba(78,168,255,0.4), transparent 70%);
+    --text-glow: rgba(78, 168, 255, 0.6);
+    --accent: #6eb8ff;
+  }
+  
+  .cell-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  
+  .cell-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
+  
+  .cell-number {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.05;
+    color: #fff;
+    text-shadow: 0 0 20px var(--text-glow), 0 0 40px var(--text-glow);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+  }
+  
+  .cell-unit {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    margin-left: 3px;
+  }
+  
+  @media (max-width: 340px) {
+    .cell-number { font-size: 36px; }
+    .cell-title { font-size: 12px; }
+    .widget { padding: 10px; }
+    .grid { gap: 8px; }
+  }
+  
+  @media (max-height: 500px) {
+    .cell-number { font-size: 34px; }
+  }
+  
+  @keyframes tick {
+    0% { opacity: 0.7; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .cell-number.tick {
+    animation: tick 0.25s ease;
+  }
+</style>
+</head>
+<body>
+<div class="widget">
+  <div class="grid">
+    <div class="cell pink">
+      <div class="cell-title">本年还剩</div>
+      <div class="cell-value">
+        <span class="cell-number" id="yearDays">--</span>
+        <span class="cell-unit">天</span>
+      </div>
+    </div>
+    <div class="cell cyan">
+      <div class="cell-title">本月还剩</div>
+      <div class="cell-value">
+        <span class="cell-number" id="monthDays">--</span>
+        <span class="cell-unit">天</span>
+      </div>
+    </div>
+    <div class="cell orange">
+      <div class="cell-title">本周还剩</div>
+      <div class="cell-value">
+        <span class="cell-number" id="weekDays">--</span>
+        <span class="cell-unit">天</span>
+      </div>
+    </div>
+    <div class="cell blue">
+      <div class="cell-title">今天还剩</div>
+      <div class="cell-value">
+        <span class="cell-number" id="todayHours">--</span>
+        <span class="cell-unit">小时</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  const els = {
+    year: document.getElementById('yearDays'),
+    month: document.getElementById('monthDays'),
+    week: document.getElementById('weekDays'),
+    today: document.getElementById('todayHours')
+  };
+  let last = { year: -1, month: -1, week: -1, today: -1 };
+  
+  function update() {
+    const now = new Date();
+    const y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+    
+    const yearLeft = Math.floor((new Date(y+1,0,1) - now) / 86400000);
+    setVal('year', yearLeft);
+    
+    const monthLeft = Math.floor((new Date(y,m+1,1) - now) / 86400000);
+    setVal('month', monthLeft);
+    
+    const dow = now.getDay() === 0 ? 7 : now.getDay();
+    const weekStart = new Date(y, m, d - dow + 1);
+    const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+7);
+    const weekLeft = Math.floor((weekEnd - now) / 86400000);
+    setVal('week', weekLeft);
+    
+    const todayLeft = Math.floor((new Date(y,m,d+1) - now) / 3600000);
+    setVal('today', todayLeft);
+  }
+  
+  function setVal(key, v) {
+    if (last[key] !== v) {
+      els[key].textContent = v;
+      els[key].classList.remove('tick');
+      void els[key].offsetWidth;
+      els[key].classList.add('tick');
+      last[key] = v;
+    }
+  }
+  
+  update();
+  setInterval(update, 1000);
+})();
+</script>
+</body>
+</html>
